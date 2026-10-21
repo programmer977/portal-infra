@@ -8,6 +8,8 @@ if (!form || !list || !feedback || !reload) {
     throw new Error("Elementos obrigatórios não encontrados no HTML");
 }
 
+void renderTickets();
+
 type Ticket = {
   id : number,
   title : string,
