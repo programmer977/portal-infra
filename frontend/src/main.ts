@@ -30,6 +30,8 @@ async function renderTickets():Promise<void> {
     const tickets = await api<Ticket[]>("/api/tickets");
     let count:number = 0;
     list?.replaceChildren();
+    tickets.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
   for(const ticket of tickets){
       const item = document.createElement("li");
       const title = document.createElement("strong");
@@ -48,7 +50,7 @@ async function renderTickets():Promise<void> {
   }
   const showCount = document.createElement("strong");
   showCount.textContent = `contagem total de chamadas abertas : ${count}`;
-  
+
   if(tickets.length===0){
     if(feedback){
       feedback.textContent = "não há pedidos atualmente";
