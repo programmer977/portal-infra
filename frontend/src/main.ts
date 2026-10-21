@@ -2,11 +2,10 @@ const form = document.querySelector<HTMLFormElement>("#new-ticket-form");
 const list = document.querySelector<HTMLUListElement>("#ticket-list");
 const feedback = document.querySelector<HTMLParagraphElement>("#feedback");
 const reload = document.querySelector<HTMLButtonElement>("#reload");
+const submitButton = document.querySelector<HTMLButtonElement>("button[type='submit']");
 
 if (!form || !list || !feedback || !reload) {
-    throw new Error(
-        "Elementos obrigatórios não encontrados no HTML"
-    );
+    throw new Error("Elementos obrigatórios não encontrados no HTML");
 }
 
 type Ticket = {
@@ -66,6 +65,10 @@ async function renderTickets():Promise<void> {
 
 form.addEventListener('submit', async(event)=>{
   event.preventDefault();
+  if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Enviando...";
+    }
   const formData = new FormData(form);
   const title = String(formData.get("title")??"");
   const description = String(formData.get("description")??"");
