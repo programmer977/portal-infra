@@ -1,6 +1,8 @@
 import  express  from "express";
 import {pool} from "./db.js";
 import {ticketSchema,updateTicketSchema} from "./validation.js";
+import { ZodError } from "zod";
+import type { ErrorRequestHandler } from "express";
 
 export const app = express();
 
@@ -40,3 +42,22 @@ app.patch("/api/tickets/:id/status",async (req,res)=>{
     }
     res.json(result.rows[0]);
 })
+
+app.use((req,res)=>res.status(404).json({error : "Rota não encontrada"}));
+
+const errorHandler : ErrorRequestHandler = ( error , req , res , next)=>{
+    if(error instanceof ZodError){
+        res.status(400).json({
+            error:"dados inválidos",
+            details: error.issues.map(issue=>issue.message),
+        });
+        return;
+    }
+    if(res.headersSent){
+        next(error);
+        return;
+    }
+    console.error(error);
+    res.status(500).json({error:"falha interna no servidor"});
+}
+app.use(errorHandler);
