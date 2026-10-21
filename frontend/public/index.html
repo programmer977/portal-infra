@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Infra</title>
+</head>
+<body>
+    <main>
+        <h1>Portal Corporativo de Chamados</h1>
+        <section>
+            <h2>Cadastrar chamado</h2>
+            <form id="new-ticket-form">
+                <label for="title">Título:</label>
+                <input id="title" name="title" type="text" required max="120" min="3">
+                <label for="description">Descrição:</label>
+                <textarea id="description" name="description" required maxlength="1000"></textarea>
+                <button type="submit">Cadastrar chamado</button>
+            </form>
+        </section>
+        <section>
+            <h2>Chamados cadastrados</h2>
+            <h3>Os chamados são guardados no PostgreSQL</h3>
+            <button id="reload" type="button">Atualizar</button>
+            <ul id="ticket-list"></ul>
+
+        </section><p id="feedback" role="status"></p></main>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
