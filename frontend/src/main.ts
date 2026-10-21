@@ -28,17 +28,31 @@ async function api<T>(path:string,options?:RequestInit):Promise<T> {
 async function renderTickets():Promise<void> {
   try{
     const tickets = await api<Ticket[]>("/api/tickets");
-  list?.replaceChildren();
+    let count:number = 0;
+    list?.replaceChildren();
   for(const ticket of tickets){
       const item = document.createElement("li");
       const title = document.createElement("strong");
+      const createData = document.createElement("li");
       title.textContent = `${ticket.id} - ${ticket.title}`;
       const description = document.createElement("p");
       description.textContent = ticket.description;
+      createData.textContent = ticket.created_at;
       const status = document.createElement("p");
       status.textContent =  `Status : ${ticket.status}`;
+      if(ticket.status === "aberto"){
+        count++;
+      }
       item.append(title,description,status);
       list?.append(item);
+  }
+  const showCount = document.createElement("strong");
+  showCount.textContent = `contagem total de chamadas abertas : ${count}`;
+  
+  if(tickets.length===0){
+    if(feedback){
+      feedback.textContent = "não há pedidos atualmente";
+    }
   }
 }
   catch (error) {
