@@ -37,17 +37,17 @@ async function renderTickets():Promise<void> {
   for(const ticket of tickets){
       const item = document.createElement("li");
       const title = document.createElement("strong");
-      const createData = document.createElement("li");
+      const createData = document.createElement("p");
       title.textContent = `${ticket.id} - ${ticket.title}`;
       const description = document.createElement("p");
       description.textContent = ticket.description;
-      createData.textContent = ticket.created_at;
+      createData.textContent = new Date(ticket.created_at).toLocaleString("pt-BR");;
       const status = document.createElement("p");
       status.textContent =  `Status : ${ticket.status}`;
       if(ticket.status === "aberto"){
         count++;
       }
-      item.append(title,description,status);
+      item.append(title,description,status,createData);
       list?.append(item);
   }
   if(opencount){
