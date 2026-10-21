@@ -3,8 +3,9 @@ const list = document.querySelector<HTMLUListElement>("#ticket-list");
 const feedback = document.querySelector<HTMLParagraphElement>("#feedback");
 const reload = document.querySelector<HTMLButtonElement>("#reload");
 const submitButton = document.querySelector<HTMLButtonElement>("button[type='submit']");
+const opencount = document.querySelector<HTMLParagraphElement>("#openCount");
 
-if (!form || !list || !feedback || !reload) {
+if (!form || !list || !feedback || !reload || !opencount) {
     throw new Error("Elementos obrigatórios não encontrados no HTML");
 }
 
@@ -49,10 +50,9 @@ async function renderTickets():Promise<void> {
       item.append(title,description,status);
       list?.append(item);
   }
-  const showCount = document.createElement("strong");
-  showCount.textContent = `contagem total de chamadas abertas : ${count}`;
-  list?.after(showCount);
-
+  if(opencount){
+      opencount.textContent = `total de chamados abertos : ${count}`;
+  }
   if(tickets.length===0){
     if(feedback){
       feedback.textContent = "não há pedidos atualmente";
@@ -68,10 +68,10 @@ async function renderTickets():Promise<void> {
 
 form.addEventListener('submit', async(event)=>{
   event.preventDefault();
-  if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "Enviando...";
-    }
+  if (!submitButton) return;
+  submitButton.disabled = true;
+  submitButton.textContent = "Enviando...";
+
   const formData = new FormData(form);
   const title = String(formData.get("title")??"");
   const description = String(formData.get("description")??"");
@@ -89,6 +89,9 @@ form.addEventListener('submit', async(event)=>{
                 ? error.message
                 : "Falha ao cadastrar chamado";
 
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Cadastrar chamado";
     }
   }
 )
