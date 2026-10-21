@@ -12,7 +12,7 @@ type Ticket = {
   id : number,
   title : string,
   description : string,
-  status : "aberto"|"fechado",
+  status : "aberto"|"resolvido",
   created_at : string;
 };
 
@@ -49,6 +49,7 @@ async function renderTickets():Promise<void> {
   }
   const showCount = document.createElement("strong");
   showCount.textContent = `contagem total de chamadas abertas : ${count}`;
+  list?.after(showCount);
 
   if(tickets.length===0){
     if(feedback){

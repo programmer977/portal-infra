@@ -20,7 +20,7 @@ app.post("/api/tickets", async (req,res)=>{
     const result = await pool.query(`INSERT INTO tickets (title, description)
          VALUES ($1, $2)
          RETURNING id, title, description, status, created_at`, [title,description]);
-         res.status(201).json(result.rows);
+         res.status(201).json(result.rows[0]);
 })
 
 app.patch("/api/tickets/:id/status",async (req,res)=>{
